@@ -7,16 +7,15 @@ def start_check():
   sm.update()
 
 #  check_signal(sm, sm['carState'].canValid, "Can Valid") #@26 :Bool;
-  check_signal(sm, sm['carState'].doorOpen, "Door Open")
-  check_signal(sm, sm['carState'].seatbeltUnlatched, "Seatbelt Unlatched")
-  check_signal(sm, sm['carState'].buttonEvents, "Button Events")
-  check_signal(sm, sm['carState'].leftBlinker, "Left Blinker") #@20 :Bool;
-  check_signal(sm, sm['carState'].rightBlinker, "Right Blinker") #@21 :Bool;
-  check_signal(sm, sm['carState'].genericToggle, "Generic Toggle") #@23 :Bool;
+  check_signal(sm, "doorOpen", "Door Open")
+  check_signal(sm, "seatbeltUnlatched", "Seatbelt Unlatched")
+  check_signal(sm, "buttonEvents", "Button Events")
+  check_signal(sm, "leftBlinker", "Left Blinker") #@20 :Bool;
+  check_signal(sm, "rightBlinker", "Right Blinker") #@21 :Bool;
+  check_signal(sm, "genericToggle", "Generic Toggle") #@23 :Bool;
 
-
-def check_signal(sm, signal, desc):
-  lastStatus = signal
+def check_signal(sm, signal_name, desc):
+  lastStatus = getattr(sm['carState'], signal_name)
   count = 0
 
   print("Test ", desc)
@@ -29,7 +28,7 @@ def check_signal(sm, signal, desc):
     sm.update()
 
     if sm.updated['carState']:
-      signal = sm['carState'].doorOpen
+      signal = getattr(sm['carState'], signal_name)
       if lastStatus != signal:
          lastStatus = signal
          count += 1
